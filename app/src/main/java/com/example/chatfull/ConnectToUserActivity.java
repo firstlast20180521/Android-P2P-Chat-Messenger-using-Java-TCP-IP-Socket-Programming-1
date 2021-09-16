@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -74,6 +76,7 @@ public class ConnectToUserActivity extends AppCompatActivity{
     }
 
     public void connectBtnListener(View view) {
+        printLog("---ConnectToUserActivity.connectBtnListener---1---");
         if(portInput.getText().length() < 2 || ipInput.getText().length() < 2){
             Snackbar snackbar = Snackbar
                     .make(ipInput, "Please Enter Valid IP Address and/or Port number.", Snackbar.LENGTH_LONG);

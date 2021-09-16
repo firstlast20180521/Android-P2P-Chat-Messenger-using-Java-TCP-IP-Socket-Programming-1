@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.util.Log;
 
 import java.io.IOException;
@@ -19,6 +21,9 @@ public class MessageReceiveServer {
         this.port = port;
         this.activity = activity;
 
+        printLog("[MessageReceiveServer].MessageReceiveServer() ");
+        printLog(String.format("ip_address:[%s], port:[%d]", ip_address, port));
+
         Thread socketServerThread = new Thread(new MessageSocketServerThread());
         socketServerThread.start();
     }
@@ -27,16 +32,20 @@ public class MessageReceiveServer {
         @Override
         public void run() {
             try {
+                printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() port:[%d]", port));
+
                 serverSocket = new ServerSocket(port);
                 while (stop == false) {
                     Socket received_userSocket = serverSocket.accept();
-                    Log.e("RECEIVE", "Connected");
+                    //Log.e("RECEIVE", "Connected");
+                    printLog("[MessageReceiveServer.MessageSocketServerThread].run() connected");
 
                     try {
                         ObjectInputStream in = new ObjectInputStream(received_userSocket.getInputStream());
                         Message message = (Message) in.readObject();
 
-                        Log.e("RECEIVE", "RECEIVED ==>" + message);
+                        //Log.e("RECEIVE", "RECEIVED ==>" + message);
+                        printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() message:[%d]", message));
                         activity.setMessage(message);
 
                     } catch (IOException e) {

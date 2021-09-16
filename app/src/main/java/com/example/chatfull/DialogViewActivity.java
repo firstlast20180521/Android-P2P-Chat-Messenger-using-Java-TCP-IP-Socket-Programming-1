@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -87,8 +89,10 @@ public class DialogViewActivity extends AppCompatActivity
 
 
         overlay = findViewById(R.id.overlay);
-        if (dialogsAdapter.isEmpty())
+        if (dialogsAdapter.isEmpty()){
+            printLog("[DialogViewActivity].onCreate() overlayテキストビューを表示する。");
             overlay.setVisibility(View.VISIBLE);
+        }
 
         fabShowInfo = findViewById(R.id.showInfoFab);
         fabEnterInfo = findViewById(R.id.enterInfoFab);
@@ -109,9 +113,19 @@ public class DialogViewActivity extends AppCompatActivity
 
         if (loaded == false) {
             sharedPrefDialog = this.getSharedPreferences(PREFERENCE_FILE_KEY_DIALOGS, MODE_PRIVATE);
+
+            if(sharedPrefDialog == null){
+                printLog("[DialogViewActivity].onResume() sharedPrefDialog is null");
+            }else{
+                printLog("[DialogViewActivity].onResume() sharedPrefDialog is not null");
+            }
+
             editorDialog = sharedPrefDialog.edit();
             String jsonDataStringDialogArray = sharedPrefDialog.getString(SHARED_PREFERENCES_KEY_DIALOG, "");
+
             Log.e("DialogArrar", jsonDataStringDialogArray);
+            printLog(String.format("[DialogViewActivity].onResume() jsonDataStringDialogArray===>[%s]", jsonDataStringDialogArray));
+
             if ((jsonDataStringDialogArray != null || jsonDataStringDialogArray != "null") && jsonDataStringDialogArray.length() > 2) {
                 Dialog dialodArray[] = gson.fromJson(jsonDataStringDialogArray, Dialog[].class);
                 if (dialodArray != null) {
@@ -119,6 +133,7 @@ public class DialogViewActivity extends AppCompatActivity
                         dialogArrayList.add(d);
                     }
                     dialogsAdapter.addItems(dialogArrayList);
+                    printLog("[DialogViewActivity].onResume() overlayテキストビューを隠す。");
                     overlay.setVisibility(View.INVISIBLE);
                 }
             }
@@ -197,9 +212,17 @@ public class DialogViewActivity extends AppCompatActivity
                     dialogArrayList.add(dialog);
 
                     String jsonDataStringDialog = gson.toJson(dialogArrayList);
+
+                    if(editorDialog == null){
+                        printLog("[DialogViewActivity].onActivityResult() editorDialog is null");
+                    }else{
+                        printLog("[DialogViewActivity].onActivityResult() editorDialog is not null");
+                    }
+
                     editorDialog.putString(SHARED_PREFERENCES_KEY_DIALOG, jsonDataStringDialog);
                     editorDialog.commit();
 
+                    printLog("[DialogViewActivity].onActivityResult() overlayテキストビューを隠す。");
                     overlay.setVisibility(View.INVISIBLE);
                 }
                 onDialogClick(dialog);

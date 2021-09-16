@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        showInfoBtn = findViewById(R.id.showInfo);
+        printLog("[MainActivity].onCreate");
+
+        //        showInfoBtn = findViewById(R.id.showInfo);
 //        enterInfoBtn = findViewById(R.id.enterInfo);
         nameInput = findViewById(R.id.nameInput);
         continueBtn = findViewById(R.id.continue_btn);
