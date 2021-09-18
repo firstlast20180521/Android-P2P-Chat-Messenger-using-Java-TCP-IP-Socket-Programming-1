@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,9 +28,12 @@ public class SendMessage extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... arg0) {
+        printLog(String.format("[SendMessage].doInBackground() ---1--- "));
+
         try {
             clientSocket = new Socket(dstAddress, dstPort);
-            Log.e("SEND_MSG", "Connected, Sending: " + message.getText());
+            //Log.e("SEND_MSG", "Connected, Sending: " + message.getText());
+            printLog(String.format("[SendMessage].doInBackground() ---Connected--- message.getText() ===>[%S]", message.getText()));
 
             if (clientSocket != null) {
                 final Snackbar snackbar =  Snackbar.make(activity.btnSend, "Uploading... Socket is busy, Please Wait", Snackbar.LENGTH_INDEFINITE);

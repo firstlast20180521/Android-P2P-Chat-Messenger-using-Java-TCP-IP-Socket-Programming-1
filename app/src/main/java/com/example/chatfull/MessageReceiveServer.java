@@ -45,7 +45,7 @@ public class MessageReceiveServer {
                         Message message = (Message) in.readObject();
 
                         //Log.e("RECEIVE", "RECEIVED ==>" + message);
-                        printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() message:[%d]", message));
+                        printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() message:[%s]", message.toString()));
                         activity.setMessage(message);
 
                     } catch (IOException e) {

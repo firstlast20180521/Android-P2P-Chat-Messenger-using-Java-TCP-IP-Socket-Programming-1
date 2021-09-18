@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -105,6 +107,7 @@ public class ChatActivity extends AppCompatActivity
         Dialog dg = (Dialog) getIntent().getSerializableExtra("dialog");
         dialog = DialogViewActivity.dialogsAdapter.getItemById(dg.getId());
 
+        printLog(String.format("[ChatActivity].onCreate() Before creating MessageReceiveServer"));
         messageReceiveServer = new MessageReceiveServer(ShowInfoActivity.getSelfIpAddress(), ShowInfoActivity.getSelfPort(), this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -278,6 +281,8 @@ public class ChatActivity extends AppCompatActivity
     }
 
     public void onBtnSendClick(View view) {
+        printLog(String.format("[ChatActivity].onBtnSendClick() ---1--- input.getText().toString() ===>[%S]", input.getText().toString()));
+
         if (input.getText().toString() == null) return;
 
         Message message = new Message(Integer.toString(++cnt), DialogViewActivity.me, input.getText().toString(), Calendar.getInstance().getTime());
@@ -290,9 +295,13 @@ public class ChatActivity extends AppCompatActivity
 
         messageArrayList.add(message);
 
+        printLog(String.format("[ChatActivity].onBtnSendClick() ---2--- Before SendMessage."));
         sender = new SendMessage(user.getIpAddress(), user.getPort(), message, this);
         sender.execute();
-        Log.e("SEND", input.getText().toString());
+
+        //Log.e("SEND", input.getText().toString());
+        printLog(String.format("[ChatActivity].onBtnSendClick() ---2--- After SendMessage."));
+
         input.setText("");
     }
 

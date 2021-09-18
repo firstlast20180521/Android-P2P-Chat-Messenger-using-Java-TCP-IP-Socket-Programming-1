@@ -35,6 +35,7 @@ public class Server {
     private class SocketServerThread extends Thread {
         @Override
         public void run() {
+            printLog("[Server.SocketServerThread].run()");
             try {
                 // create ServerSocket using specified port
                 serverSocket = new ServerSocket(self_port);
@@ -43,11 +44,11 @@ public class Server {
 
                     // block the call until connection is created and return Socket object
                     //Log.e("SERVER", "WAITING");
-                    printLog("[Server] waiting...");
+                    printLog("[Server.SocketServerThread] waiting...");
 
                     Socket received_userSocket = serverSocket.accept();
                     //Log.e("SERVER", "CONNECTED");
-                    printLog("[Server] Connected");
+                    printLog("[Server.SocketServerThread] Connected");
 
                     //Receive user credentials
                     BufferedReader input = new BufferedReader(new InputStreamReader(received_userSocket.getInputStream()));

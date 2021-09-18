@@ -111,7 +111,10 @@ public class DialogViewActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        printLog(String.format("[DialogViewActivity].onResume() ---1--- loaded===>[%s]", loaded));
+
         if (loaded == false) {
+
             sharedPrefDialog = this.getSharedPreferences(PREFERENCE_FILE_KEY_DIALOGS, MODE_PRIVATE);
 
             if(sharedPrefDialog == null){
@@ -199,6 +202,8 @@ public class DialogViewActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == SHOW_INFO || requestCode == ENTER_INFO) && data != null) {
             if (resultCode == RESULT_OK) {
@@ -225,6 +230,7 @@ public class DialogViewActivity extends AppCompatActivity
                     printLog("[DialogViewActivity].onActivityResult() overlayテキストビューを隠す。");
                     overlay.setVisibility(View.INVISIBLE);
                 }
+                printLog("[DialogViewActivity].onActivityResult() Before onDialogClick(dialog)");
                 onDialogClick(dialog);
             }
         }
@@ -232,9 +238,11 @@ public class DialogViewActivity extends AppCompatActivity
 
     @Override
     public void onDialogClick(Dialog dialog) {
+        printLog("[DialogViewActivity].onActivityResult() チャット画面 ChatActivity 表示前");
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra("user", dialog.getUsers().get(0));
         intent.putExtra("dialog", dialog);
         startActivity(intent);
+        printLog("[DialogViewActivity].onActivityResult() チャット画面 ChatActivity 表示後");
     }
 }
