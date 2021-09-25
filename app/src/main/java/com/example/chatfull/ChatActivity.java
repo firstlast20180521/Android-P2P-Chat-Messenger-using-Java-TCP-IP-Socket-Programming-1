@@ -296,6 +296,9 @@ public class ChatActivity extends AppCompatActivity
         messageArrayList.add(message);
 
         printLog(String.format("[ChatActivity].onBtnSendClick() ---2--- Before SendMessage."));
+        printLog(String.format("[ChatActivity].onBtnSendClick() ---3--- user.getIpAddress() ===>", user.getIpAddress()));
+        printLog(String.format("[ChatActivity].onBtnSendClick() ---4--- user.getPort() ===>", user.getPort()));
+        printLog(String.format("[ChatActivity].onBtnSendClick() ---5--- message ===>", message));
         sender = new SendMessage(user.getIpAddress(), user.getPort(), message, this);
         sender.execute();
 

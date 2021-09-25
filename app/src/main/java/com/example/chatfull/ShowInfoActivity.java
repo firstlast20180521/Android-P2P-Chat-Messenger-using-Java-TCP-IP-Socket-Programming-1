@@ -1,5 +1,7 @@
 package com.example.chatfull;
 
+import static com.example.chatfull.Utility.printLog;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -65,29 +67,37 @@ public class ShowInfoActivity extends AppCompatActivity {
 
     // Returns device IP Address
     public static String getSelfIpAddress() {
+        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---1---"));
+
         String self_ip = "";
         try {
-            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                    .getNetworkInterfaces();
+            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
+
             while (enumNetworkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = enumNetworkInterfaces
-                        .nextElement();
-                Enumeration<InetAddress> enumInetAddress = networkInterface
-                        .getInetAddresses();
+                printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---2---"));
+
+                NetworkInterface networkInterface = enumNetworkInterfaces.nextElement();
+                Enumeration<InetAddress> enumInetAddress = networkInterface.getInetAddresses();
+
                 while (enumInetAddress.hasMoreElements()) {
-                    InetAddress inetAddress = enumInetAddress
-                            .nextElement();
+                    printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---3---"));
+                    InetAddress inetAddress = enumInetAddress.nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
+                        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---4---"));
                         self_ip = inetAddress.getHostAddress();
+                        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---5---[%S]", self_ip));
                     }
                 }
             }
 
         } catch (SocketException e) {
             e.printStackTrace();
-            Log.e("GET_IP", "IP NOT FOUND");
+            //Log.e("GET_IP", "IP NOT FOUND");
+            printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---ERROR--- IP NOT FOUND"));
         }
+
+        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---6---[%S]", self_ip));
         return self_ip;
     }
 }

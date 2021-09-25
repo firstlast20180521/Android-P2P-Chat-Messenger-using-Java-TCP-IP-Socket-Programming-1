@@ -3,6 +3,7 @@ package com.example.chatfull;
 import static com.example.chatfull.Utility.printLog;
 
 import android.util.Log;
+import android.view.Surface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,13 +40,22 @@ public class MessageReceiveServer {
                     Socket received_userSocket = serverSocket.accept();
                     //Log.e("RECEIVE", "Connected");
                     printLog("[MessageReceiveServer.MessageSocketServerThread].run() connected");
+                    //printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() ipaddress ===>[%s]", serverSocket.));
 
                     try {
                         ObjectInputStream in = new ObjectInputStream(received_userSocket.getInputStream());
                         Message message = (Message) in.readObject();
 
                         //Log.e("RECEIVE", "RECEIVED ==>" + message);
-                        printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() message:[%s]", message.toString()));
+                        if (true == message.isFile()) {
+                            printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() 受信メッセージ:[%s]", message.getFilename()));
+                        } else if (true == message.isImage()) {
+                            printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() 受信メッセージ:[%s]", message.getImageUrl()));
+                        } else {
+                            printLog(String.format("[MessageReceiveServer.MessageSocketServerThread].run() 受信メッセージ:[%s]", message.getText().toString()));
+                        }
+
+
                         activity.setMessage(message);
 
                     } catch (IOException e) {
