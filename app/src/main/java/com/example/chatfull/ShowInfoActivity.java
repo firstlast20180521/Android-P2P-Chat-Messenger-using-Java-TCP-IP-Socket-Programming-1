@@ -67,37 +67,58 @@ public class ShowInfoActivity extends AppCompatActivity {
 
     // Returns device IP Address
     public static String getSelfIpAddress() {
-        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---1---"));
+        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 1. Start of Method"));
 
-        String self_ip = "";
+        String self_ip_1 = "";
+        String self_ip_temp = "";
         try {
             Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
 
-            while (enumNetworkInterfaces.hasMoreElements()) {
-                printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---2---"));
+            L1: while (enumNetworkInterfaces.hasMoreElements()) {
 
                 NetworkInterface networkInterface = enumNetworkInterfaces.nextElement();
-                Enumeration<InetAddress> enumInetAddress = networkInterface.getInetAddresses();
 
-                while (enumInetAddress.hasMoreElements()) {
-                    printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---3---"));
-                    InetAddress inetAddress = enumInetAddress.nextElement();
+                printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 2. Interface Name ===>[%S]", networkInterface.getName()));
 
-                    if (inetAddress.isSiteLocalAddress()) {
-                        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---4---"));
-                        self_ip = inetAddress.getHostAddress();
-                        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---5---[%S]", self_ip));
+                if (networkInterface.isUp()) {
+                    printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 3.1 is Up"));
+
+                    Enumeration<InetAddress> enumInetAddress = networkInterface.getInetAddresses();
+
+                    while (enumInetAddress.hasMoreElements()) {
+                        InetAddress inetAddress = enumInetAddress.nextElement();
+
+                        if (inetAddress.isSiteLocalAddress()) {
+                            printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 4.1 is SiteLocalAddress"));
+
+                            self_ip_1 = inetAddress.getHostAddress();
+                            printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 5.1 ip address ===>[%S]", self_ip_1));
+                            //break L1;
+
+                        }else {
+                            printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 4.2 is not SiteLocalAddress"));
+
+                            self_ip_temp = inetAddress.getHostAddress();
+                            printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 5.2 ip address ===>[%S]", self_ip_temp));
+
+                        }
                     }
+
+                } else {
+                    printLog(String.format("[ShowInfoActivity].getSelfIpAddress() 3.2 is Down"));
+
                 }
+
             }
 
         } catch (SocketException e) {
             e.printStackTrace();
-            //Log.e("GET_IP", "IP NOT FOUND");
+            // Log.e("GET_IP", "IP NOT FOUND");
             printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---ERROR--- IP NOT FOUND"));
         }
 
-        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---6---[%S]", self_ip));
-        return self_ip;
+        printLog(String.format("[ShowInfoActivity].getSelfIpAddress() ---6---[%S]", self_ip_1));
+        return self_ip_1;
+
     }
 }
